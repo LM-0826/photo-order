@@ -1,12 +1,25 @@
+<i18n>
+{
+  "en": {
+    "hello": "hello world!"
+  },
+  "cn": {
+    "hello": "你好,世界！"
+  }
+}
+</i18n>
 <template>
     <header class="mf-header">
-      <p>Photo Display</p>
+      <p>{{ $t('header.title') }}</p>
       <div>
+        <span>{{ $t('header.crumb') }}</span>
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
             <i class="el-icon-s-tools" style="font-size: 20px;padding: 10px;"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-set-up" command="chinese">中文</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-set-up" command="english">English</el-dropdown-item>
             <el-dropdown-item icon="el-icon-circle-close" command="loginout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -17,7 +30,7 @@
   export default {
     data () {
       return {
-
+        locale: 'cn'
       };
     },
     created () {
@@ -26,6 +39,12 @@
     methods: {
       handleCommand(command) {
         switch(command) {
+          case 'chinese':
+            this.locale = 'cn';
+            break;
+          case 'english':
+            this.locale = 'en';
+            break;
           case 'loginout':
             this.loginOut();
             break;
@@ -39,6 +58,11 @@
         this.$router.replace({
           name: 'login'
         })
+      }
+    },
+    watch: {
+      locale (val) {
+        this.$i18n.locale = val
       }
     }
   }

@@ -1,7 +1,7 @@
 <template>
     <el-container class="mf-container" style="height: 100vh;overflow: hidden;">
         <el-header class="header">
-            <my-header @menuControl="menuControl"></my-header>
+            <my-header></my-header>
         </el-header>
         <el-container style="overflow: auto;">
             <keep-alive>
@@ -9,54 +9,24 @@
             </keep-alive>
             <router-view v-if="!$route.meta.keepAlive"></router-view>
         </el-container>
-        <el-footer class="compunty">摄影工作室</el-footer>
+        <el-footer class="compunty">{{ $t('footer.info') }}</el-footer>
     </el-container>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import LoadingTpl from "../components/loading.vue";
 import Header from "../components/header.vue";
-import Sidebar from "../components/Sidebar.vue";
 export default {
   data() {
     return {
-      isCollapse: false // 菜单收缩控制
+
     };
   },
   components: {
-    sidebar: Sidebar,
     myHeader: Header
   },
   methods: {
-    // 菜单收缩
-    menuControl(isCollapse) {
-      this.isCollapse = isCollapse;
-    }
-  },
-  computed: {
-    currentIndex() {
-      return this.$route.path;
-    },
-    currentUrl() {
-      let tempList = sessionStorage.getItem('menuList')
-      if (!tempList) {
-          this.$router.replace({
-              name: 'login'
-          })
-          return '/user/1'
-      }
-      tempList = JSON.parse(tempList)
-      let url = '/user/1'
-      tempList.forEach(menu => {
-          menu.children.length > 0 && menu.children.forEach(item => {
-              if (this.$route.path === item.url || item.siblings.includes(this.$route.path)) {
-                  url = menu.url
-              }
-          })
-      })
-      return url
-    }
+
   },
 };
 </script>
