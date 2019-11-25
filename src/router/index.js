@@ -64,6 +64,7 @@ router.beforeEach(async(to, from, next) => {
       next({ path: `/login?redirect=${to.path}` })
       NProgress.done()
     } else {
+      
       next()
       NProgress.done()
     }

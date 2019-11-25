@@ -78,7 +78,7 @@ export default {
           if (res.data.code == 0){
             this.setUserInfo(res.data.data);
             if (res.data.data.user) {
-              sessionStorage.setItem("user", res.data.data.user);
+              sessionStorage.setItem("user", JSON.stringify(res.data.data.user));
               sessionStorage.setItem("token", res.data.data.token);
               this.setAdminPermisions(res.data.data.user.adminPermisions)          
             }
