@@ -35,8 +35,8 @@ export default {
 .header {
   position: fixed;
   top: 0;
-  left: 10%;
-  right: 10%;
+  left: 0;
+  right: 0;
   padding: 0;
   height: 51px!important;
   z-index: 9;
@@ -45,7 +45,7 @@ export default {
 }
 .mf-container{
   padding-top: 51px;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 }
 .compunty {

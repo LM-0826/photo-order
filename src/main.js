@@ -1,21 +1,31 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import 'babel-polyfill'
 import Vue from 'vue'
+import FastClick from 'fastclick'
 import App from './App'
 import router from './router'
 import store from './store/index'
 import config from './config'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import api from './http/api'
+import VueLazyLoad from 'vue-lazyload'
+import AjaxPlugin from './http/request.js'
 import VueI18n from 'vue-i18n'
+import device from './plugins/device'
+import  { ToastPlugin } from 'vux'
+
+// import './plugns/vconsole.js'
 
 Vue.config.productionTip = false
 Vue.prototype.config = config;
 
+Vue.use(VueLazyLoad)
+Vue.use(AjaxPlugin)
 Vue.use(ElementUI);
 Vue.use(VueI18n)
-Vue.prototype.api = api;
+Vue.use(ToastPlugin, {position: 'middle'})
+FastClick.attach(document.body)
 
 /*---------使用语言包-----------*/
 const i18n = new VueI18n({
@@ -26,6 +36,10 @@ const i18n = new VueI18n({
   },
 })
 
+// 将设备信息进行原型挂载
+for (let key in device) {
+  Vue.prototype[key] = device[key]
+}
 
 new Vue({
   el: '#app',

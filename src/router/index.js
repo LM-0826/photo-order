@@ -2,9 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css' // progress bar style
+import device from '../plugins/device'
+const ISPC = device.isPC
 Vue.use(Router)
-NProgress.configure({ showSpinner: true })
-const router = new Router({
+NProgress.configure({ showSpinner: false })
+const PC_ROUTER = {
   routes: [
     {
       path: '/',
@@ -14,47 +16,67 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: resolve => {
-        require(['../views/login.vue'], resolve)
+        require(['../views/Pc-Login.vue'], resolve)
       }
     },
     {
-      path: '/user',
+      path: '/pc',
       component: resolve => {
-        require(['../views/index.vue'], resolve)
+        require(['../views/Pc-Index.vue'], resolve)
       },
+      redirect: 'orderIndex',
       children: [
         {
-          path: '',
-          redirect: 'queryAccount'
-        },
-        {
-          path: 'queryAccount',
-          name: 'QueryAccount',
+          path: 'orderIndex',
+          name: 'OrderIndex',
           meta: {
-            keepAlive: true,
-            firstCrumb: '运营账号管理',
-            secondCrumb: '运营账号查询'
+            keepAlive: false
           },
           component: resolve => {
-            require(['../views/OperationAccount/QueryAccount.vue'], resolve)
-          }
-        },
-        {
-          path: 'addOperationAccount',
-          name: 'AddOperationAccount',
-          meta: {
-            keepAlive: true,
-            firstCrumb: '运营账号管理',
-            secondCrumb: '添加运营账号'
-          },
-          component: resolve => {
-            require(['../views/OperationAccount/AddAccount.vue'], resolve)
+            require(['../views/Order/Index.vue'], resolve)
           }
         }
       ]
     }
   ]
-})
+}
+const MOBILE_ROUTER = {
+  routes: [
+    {
+      path: '/',
+      redirect: '/login'
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: resolve => {
+        require(['../views/Mobile-Login.vue'], resolve)
+      }
+    },
+    {
+      path: '/mobile',
+      component: resolve => {
+        require(['../views/Mobile-Index.vue'], resolve)
+      },
+      redirect: 'orderIndex',
+      children: [
+        {
+          path: 'orderIndex',
+          name: 'OrderIndex',
+          meta: {
+            keepAlive: false
+          },
+          component: resolve => {
+            require(['../views/Order/Index.vue'], resolve)
+          }
+        }
+      ]
+    }
+  ]
+}
+
+const router = new Router(ISPC ? PC_ROUTER : MOBILE_ROUTER)
+// 路由前置 后置拦截
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
   let token = sessionStorage.getItem('token')
@@ -64,34 +86,16 @@ router.beforeEach(async(to, from, next) => {
       next({ path: `/login?redirect=${to.path}` })
       NProgress.done()
     } else {
-      
       next()
       NProgress.done()
     }
   } else {
-    let tempMenuList = JSON.parse(sessionStorage.getItem('menuList'))
-    let currentMenu = ['/login']
-    tempMenuList.forEach(child => {
-      child.children.forEach(item => {
-        currentMenu.push(item.url)
-        currentMenu = currentMenu.concat(item.siblings)
-      })
-    })
-    if (!currentMenu.includes(to.path)) {
-      console.log(`您好，您没有权限跳转到 ${to.path} ，请在运营账户管理添加对应的菜单权限~ - ${new Date()}`)
-      if (from.path != '/login') {
-        next({ path: from.path })
-      } else {
-        next({ path: currentMenu[1] })
-      }
-      NProgress.done()
-    } else {
-      next()
-      NProgress.done()
-    }
+    next()
+    NProgress.done()
   }
 })
 router.afterEach(() => {
   NProgress.done()
 })
+
 export default router

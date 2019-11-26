@@ -36,7 +36,6 @@
 </template>
 <script>
 import { mapMutations, mapGetters } from "vuex";
-import menuListData from '../utils/menuList'
 import { Message } from 'element-ui';
 import axios from 'axios';
 import config from '../config';
@@ -78,9 +77,12 @@ export default {
           if (res.data.code == 0){
             this.setUserInfo(res.data.data);
             if (res.data.data.user) {
-              sessionStorage.setItem("user", JSON.stringify(res.data.data.user));
+              sessionStorage.setItem("id", res.data.data.user.id);
+              sessionStorage.setItem("school", res.data.data.user.school);
+              sessionStorage.setItem("team", res.data.data.user.team);
+              sessionStorage.setItem("grade", res.data.data.user.grade);
               sessionStorage.setItem("token", res.data.data.token);
-              this.setAdminPermisions(res.data.data.user.adminPermisions)          
+              this.$router.push({name: 'OrderIndex'})        
             }
           } else {
             Message({
@@ -98,30 +100,6 @@ export default {
               duration: 1500
             })
         })
-    },
-    setAdminPermisions(permisions) {
-      permisions = permisions ? permisions : []
-      let commonMenu = [// 公有
-        "operation"
-      ]
-      let privateMenu = permisions.map(item => {// 私有
-        return item.name
-      })
-      let tempMenuList = JSON.parse(JSON.stringify(menuListData))
-      for (let i = 0; i < tempMenuList.length; i++) {
-        if (privateMenu.includes(tempMenuList[i].name) || commonMenu.includes(tempMenuList[i].name)) {
-
-        } else {
-          tempMenuList.splice(i, 1)
-          i--
-        }
-      }
-      sessionStorage.setItem("menuList", JSON.stringify(tempMenuList));
-      if (this.$route.query.redirect && this.$route.query.redirect != 'undefined') {
-        this.$router.replace(this.$route.query.redirect)
-      } else {
-        this.$router.replace(tempMenuList[0].children[0].url);
-      }
     }
   }
 };

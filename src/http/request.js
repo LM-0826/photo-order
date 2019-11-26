@@ -1,99 +1,32 @@
 
-import axios from 'axios';
-import router from '../router';
-import { Loading } from 'element-ui';
 import Vue from 'vue';
+import { AjaxPlugin } from 'vux'
+import store from '../store'
 
-let vm = new Vue();
-
-/********** 定义loading变量 **********/
-let loading;        
-
-//**** 使用Element loading-start 方法
-function startLoading() {    
-    loading = Loading.service({
-        lock: true,
-        text: '加载中……',
-        background: 'rgba(0, 0, 0, 0.7)'
-    })
-}
-//**** 使用Element loading-close 方法
-function endLoading() {    
-    loading.close();
-}
-//**** 那么 showFullScreenLoading() tryHideFullScreenLoading() 要干的事儿就是将同一时刻的请求合并。
-//**** 声明一个变量 needLoadingRequestCount，每次调用showFullScreenLoading方法 needLoadingRequestCount + 1。
-//**** 调用tryHideFullScreenLoading()方法，needLoadingRequestCount - 1。needLoadingRequestCount为 0 时，结束 loading。
-let needLoadingRequestCount = 0
-export function showFullScreenLoading() {
-    if (needLoadingRequestCount === 0) {
-        startLoading();
+// 响应拦截器
+AjaxPlugin.$http.interceptors.response.use(
+    response => {
+        Vue.$vux.loading.hide()
+        return response.data
+    }, 
+    error => {
+        Vue.$vux.loading.hide()
+        return Promise.reject(error)
     }
-    needLoadingRequestCount++
-}
-export function tryHideFullScreenLoading() {
-    if (needLoadingRequestCount <= 0) return
-        needLoadingRequestCount--;
-    if (needLoadingRequestCount === 0) {
-        endLoading();
+)
+  
+// 请求拦截器
+AjaxPlugin.$http.interceptors.request.use(
+    config => {
+        Vue.$vux.loading.show({text: '加载中...'})
+        let token = store.state.token || sessionStorage.getItem('token')
+        config.headers.Authorization = token
+        return config
+    }, 
+    error => {
+        Vue.$vux.loading.hide()
+        return Promise.reject(error)
     }
-}
-
-/********** 创建axios实例 **********/ 
-const service = axios.create({
-    timeout: 50000           // 请求超时时间
-})
-/********** 请求拦截器 对请求参数进行处理 **********/
-service.interceptors.request.use(config => {
-    showFullScreenLoading();
-    let token = sessionStorage.getItem('token');
-    if (!token){
-        router.push({path: '/login'})
-        let timer = setTimeout(() => {
-            tryHideFullScreenLoading()
-            clearTimeout(timer)
-        }, 1000) 
-    } else {
-        config.headers.Authorization = token;
-    }
-    return config
-}, error => {
-    let timer = setTimeout(() => {
-        tryHideFullScreenLoading()
-        clearTimeout(timer)
-    }, 1000) 
-    return Promise.reject(error)
-})
-
-/********** 响应拦截器 对响应参数进行处理 **********/
-service.interceptors.response.use(response => {
-    tryHideFullScreenLoading();
-    return response
-}, error => {
-    if (error.response.status == 401) {
-        console.log(`token无效 - ${new Date()}`)
-        let currentPath = ''
-        try {
-            currentPath = router.history.current.path
-            router.push({path: `/login?redirect=${currentPath}`})
-        } catch(e) {
-            router.push({path: `/login`})
-        }
-    }
-    if (error.response.status == 400){
-        vm.$message({           
-            showClose: true,
-            message: '密码错误',
-            type: 'error',
-            duration: 1000
-        })
-        
-    }   
-    let timer = setTimeout(() => {
-        tryHideFullScreenLoading()
-        clearTimeout(timer)
-    }, 1000) 
-    return Promise.reject(error)
-})
-
-export default service;
+)
+export default AjaxPlugin
+  

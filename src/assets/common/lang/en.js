@@ -6,5 +6,10 @@ module.exports = {
   footer: {
     orderBtn: "Enter the Order",
     info: "Office"
+  },
+  login: {
+    password_ph: "Please enter your password here",
+    school_ph: "Please enter your school here",
+    button: "Login"
   }
 }

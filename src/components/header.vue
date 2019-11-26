@@ -1,13 +1,3 @@
-<i18n>
-{
-  "en": {
-    "hello": "hello world!"
-  },
-  "cn": {
-    "hello": "你好,世界！"
-  }
-}
-</i18n>
 <template>
     <header class="mf-header">
       <p>{{ $t('header.title') }}</p>

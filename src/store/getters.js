@@ -1,10 +1,10 @@
 const getters = {
   getUserInfo: state => state.userInfo,
-  getMoreActionsStatus: state => state.moreActionsStatus,
-  getLifeBannerStatus: state => state.lifeBannerStatus,
-  getLifeAdStatus: state => state.lifeAdStatus,
-  getLifeEntryStatus: state => state.lifeEntryStatus,
-  getStartBannerStatus: state => state.startBannerStatus,
+  getToken: state => state.token || sessionStorage.getItem('token'),
+  getSchool: state => state.userInfo.school || sessionStorage.getItem('school'),
+  getTeam: state => state.userInfo.team || sessionStorage.getItem('team'),
+  getGrade: state => state.userInfo.grade || sessionStorage.getItem('team'),
+  getId: state => state.userInfo.id || sessionStorage.getItem('id'),
 }
 
 export default getters
