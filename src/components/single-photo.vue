@@ -1,5 +1,5 @@
 <template>
-  <div class="single-photo">
+  <div class="single-photo" :class="{'mobile-photo': !isPC}">
     <div class="photo">
       <img class="image-show" :class="randomClass" :src="image" @click="showPreview(0)">
     </div>
@@ -93,9 +93,10 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
     font-size: 12px;
+    margin-top: 15px;
   }
 }
-.single-photo:nth-of-type(1),.single-photo:nth-of-type(2){
+.mobile-photo:nth-of-type(1),.mobile-photo:nth-of-type(2){
   margin-top: 0;
 }
 </style>

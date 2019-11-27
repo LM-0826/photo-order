@@ -59,6 +59,7 @@
 </script>
 <style lang="less">
 .mf-header{
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

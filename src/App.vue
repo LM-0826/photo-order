@@ -27,7 +27,7 @@ export default {
       // if (this.isPC) {
       //   location.href = location.href.replace('')
       // }
-      location.reload()
+      // location.reload()
     };
   }
 };
@@ -90,6 +90,19 @@ p{
   margin: 0 auto;
 }
 .bottom-btn~.bottom-btn{
+  margin-top: 15px;
+}
+.bottom-btn-pc{
+  background-color: #89002f;
+  color: #fff;
+  border-radius: 80px;
+  width: 20%;
+  font-size: 14px;
+  line-height: 35px;
+  text-align: center;
+  margin: 0 auto;
+}
+.bottom-btn-pc~.bottom-btn-pc{
   margin-top: 15px;
 }
 </style>

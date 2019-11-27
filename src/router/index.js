@@ -33,7 +33,47 @@ const PC_ROUTER = {
             keepAlive: false
           },
           component: resolve => {
-            require(['../views/Order/Index.vue'], resolve)
+            require(['../views/Pc/Order-Index.vue'], resolve)
+          }
+        },
+        {
+          path: 'orderBuy',
+          name: 'orderBuy',
+          meta: {
+            keepAlive: false
+          },
+          component: resolve => {
+            require(['../views/Pc/Order-Buy.vue'], resolve)
+          }
+        },
+        {
+          path: 'myOrder',
+          name: 'myOrder',
+          meta: {
+            keepAlive: false
+          },
+          component: resolve => {
+            require(['../views/Pc/My-Order.vue'], resolve)
+          }
+        },
+        {
+          path: 'cart',
+          name: 'cart',
+          meta: {
+            keepAlive: false
+          },
+          component: resolve => {
+            require(['../views/Pc/Cart.vue'], resolve)
+          }
+        },
+        {
+          path: 'pay',
+          name: 'pay',
+          meta: {
+            keepAlive: false
+          },
+          component: resolve => {
+            require(['../views/Pc/Pay.vue'], resolve)
           }
         }
       ]
