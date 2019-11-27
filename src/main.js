@@ -19,12 +19,29 @@ import  { ToastPlugin } from 'vux'
 
 Vue.config.productionTip = false
 Vue.prototype.config = config;
-
+sessionStorage.setItem('token', '1123')
 Vue.use(VueLazyLoad)
 Vue.use(AjaxPlugin)
 Vue.use(ElementUI);
 Vue.use(VueI18n)
 Vue.use(ToastPlugin, {position: 'middle'})
+
+// 表单响应处理
+FastClick.prototype.focus = function(targetElement) {
+  var length;    
+  if (deviceIsIOS && targetElement.setSelectionRange 
+            && targetElement.type.indexOf('date') !== 0 
+            && targetElement.type !== 'time' 
+            && targetElement.type !== 'month') 
+  {
+      length = targetElement.value.length;        
+      targetElement.focus();        
+      targetElement.setSelectionRange(length, length);    
+  } else {
+      targetElement.focus();    
+  }
+};
+
 FastClick.attach(document.body)
 
 /*---------使用语言包-----------*/

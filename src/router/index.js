@@ -16,13 +16,13 @@ const PC_ROUTER = {
       path: '/login',
       name: 'login',
       component: resolve => {
-        require(['../views/Pc-Login.vue'], resolve)
+        require(['../views/Pc/Pc-Login.vue'], resolve)
       }
     },
     {
       path: '/pc',
       component: resolve => {
-        require(['../views/Pc-Index.vue'], resolve)
+        require(['../views/Pc/Pc-Index.vue'], resolve)
       },
       redirect: 'orderIndex',
       children: [
@@ -50,13 +50,13 @@ const MOBILE_ROUTER = {
       path: '/login',
       name: 'login',
       component: resolve => {
-        require(['../views/Mobile-Login.vue'], resolve)
+        require(['../views/Mobile/Mobile-Login.vue'], resolve)
       }
     },
     {
       path: '/mobile',
       component: resolve => {
-        require(['../views/Mobile-Index.vue'], resolve)
+        require(['../views/Mobile/Mobile-Index.vue'], resolve)
       },
       redirect: 'orderIndex',
       children: [
@@ -67,7 +67,47 @@ const MOBILE_ROUTER = {
             keepAlive: false
           },
           component: resolve => {
-            require(['../views/Order/Index.vue'], resolve)
+            require(['../views/Mobile/Order-Index.vue'], resolve)
+          }
+        },
+        {
+          path: 'orderBuy',
+          name: 'orderBuy',
+          meta: {
+            keepAlive: false
+          },
+          component: resolve => {
+            require(['../views/Mobile/Order-Buy.vue'], resolve)
+          }
+        },
+        {
+          path: 'myOrder',
+          name: 'myOrder',
+          meta: {
+            keepAlive: false
+          },
+          component: resolve => {
+            require(['../views/Mobile/My-Order.vue'], resolve)
+          }
+        },
+        {
+          path: 'cart',
+          name: 'cart',
+          meta: {
+            keepAlive: false
+          },
+          component: resolve => {
+            require(['../views/Mobile/Cart.vue'], resolve)
+          }
+        },
+        {
+          path: 'pay',
+          name: 'pay',
+          meta: {
+            keepAlive: false
+          },
+          component: resolve => {
+            require(['../views/Mobile/Pay.vue'], resolve)
           }
         }
       ]

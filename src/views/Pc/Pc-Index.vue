@@ -15,7 +15,7 @@
 
 <script>
 import { mapState } from "vuex";
-import Header from "../components/header.vue";
+import Header from "../../components/header.vue";
 export default {
   data() {
     return {

@@ -38,7 +38,7 @@
 import { mapMutations, mapGetters } from "vuex";
 import { Message } from 'element-ui';
 import axios from 'axios';
-import config from '../config';
+import config from '../../config';
 export default {
   data() {
     return {
@@ -119,7 +119,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url("../assets/imgs/bg.jpg") no-repeat center;
+  background: url("../../assets/imgs/bg.jpg") no-repeat center;
   background-size: cover;
 }
 </style>
